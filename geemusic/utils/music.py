@@ -9,9 +9,6 @@ from gmusicapi import CallFailure, Mobileclient
 
 class GMusicWrapper(object):
     def __init__(self, username, password, logger=None):
-        self._api = Mobileclient()
-
-        
         mobile_client = Mobileclient()
         mobile_client.login(username, password, mobile_client.FROM_MAC_ADDRESS)
         device = mobile_client.get_registered_devices()[0]
