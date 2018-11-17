@@ -10,9 +10,18 @@ from gmusicapi import CallFailure, Mobileclient
 class GMusicWrapper(object):
     def __init__(self, username, password, logger=None):
         self._api = Mobileclient()
-        self.logger = logger
-        success = self._api.login(username, password, getenv('ANDROID_ID', Mobileclient.FROM_MAC_ADDRESS))
 
+        
+        mobile_client = Mobileclient()
+        mobile_client.login(username, password, mobile_client.FROM_MAC_ADDRESS)
+        device = mobile_client.get_registered_devices()[0]
+        device_id = device['id'][2:]
+        
+        self._api = Mobileclient()
+        success = self._api.login(username, password, device_id)
+
+        self.logger = logger
+        
         if not success:
             raise Exception("Unsuccessful login. Aborting!")
 
