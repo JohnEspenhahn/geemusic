@@ -221,8 +221,9 @@ def thumbs_down():
         return statement(render_template("indexing"))
 
     api.rate_song(queue.current_track(), '1')
-
-    return statement(render_template("thumbs_down_text"))
+    
+    return next_song()
+    # return statement(render_template("thumbs_down_text"))
 
 
 @ask.intent("GeeMusicRestartTracksIntent")
