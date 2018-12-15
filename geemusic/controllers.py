@@ -20,7 +20,8 @@ def proxy_response(req):
         Bucket=BUCKET_NAME,
         Body=req.content,
         ContentType=req.headers["content-type"],
-        ACL='public-read'
+        ACL='public-read',
+        StorageClass='ONEZONE_IA'
     )
 
 #     url = s3_client.generate_presigned_url(
