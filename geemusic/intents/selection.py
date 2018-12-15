@@ -217,7 +217,8 @@ def play_song_radio(song_name, artist_name, album_name):
 def play_artist_radio(artist_name):
     # Fetch the artist
     artist = api.get_artist(artist_name)
-
+    app.logger.debug("Fetching artist %s" % artist_name)
+    
     if artist is False:
         return statement(render_template("no_artist"))
 
