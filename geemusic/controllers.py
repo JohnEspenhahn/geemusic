@@ -28,6 +28,9 @@ def proxy_response(req):
             "Key": file_name},
         ExpiresIn=120
     )
+    
+    app.logger.debug('Redirecting to to ' + str(url))
+    
     return redirect(url, 303)
 
 
