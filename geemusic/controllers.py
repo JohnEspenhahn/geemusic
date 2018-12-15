@@ -10,16 +10,14 @@ BUCKET_NAME = environ.get("S3_BUCKET_NAME")
 
 
 def proxy_response(req):
-    s3 = boto3.resource('s3')
     s3_client = boto3.client('s3', config=Config(signature_version='s3v4'))
 
-    bucket = s3.Bucket(BUCKET_NAME)
     file_name = str(uuid4())
 
-    obj = bucket.put_object(
+    obj = s3_client.put_object(
         Key=file_name,
+        Bucket=BUCKET_NAME,
         Body=req.content,
-        ACL="authenticated-read",
         ContentType=req.headers["content-type"]
     )
 
