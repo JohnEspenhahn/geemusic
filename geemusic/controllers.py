@@ -7,6 +7,7 @@ from os import environ
 from geemusic import app, api
 
 BUCKET_NAME = environ.get("S3_BUCKET_NAME")
+REGION = environ.get("AWS_DEFAULT_REGION")
 
 
 def proxy_response(req):
@@ -18,16 +19,18 @@ def proxy_response(req):
         Key=file_name,
         Bucket=BUCKET_NAME,
         Body=req.content,
-        ContentType=req.headers["content-type"]
+        ContentType=req.headers["content-type"],
+        ACL='public-read'
     )
 
-    url = s3_client.generate_presigned_url(
-        "get_object",
-        Params={
-            "Bucket": BUCKET_NAME,
-            "Key": file_name},
-        ExpiresIn=120
-    )
+#     url = s3_client.generate_presigned_url(
+#         "get_object",
+#         Params={
+#             "Bucket": BUCKET_NAME,
+#             "Key": file_name},
+#         ExpiresIn=120
+#     )
+    url = 'https://s3-{}.amazonaws.com/{}/{}'.format(REGION, BUCKET_NAME, file_name)
     
     app.logger.debug('Redirecting to to ' + str(url))
     
