@@ -11,8 +11,16 @@ class GMusicWrapper(object):
     def __init__(self, username, password, logger=None):
         mobile_client = Mobileclient()
         mobile_client.login(username, password, mobile_client.FROM_MAC_ADDRESS)
-        device = mobile_client.get_registered_devices()[0]
-        device_id = device['id'][2:]
+        
+        device_id = None
+        for device in reversed(mobile_client.get_registered_devices()):
+            type = str(device['type'])
+            if type == 'ANDROID' or type == 'IOS':
+                device_id = device['id'][2:]
+                break
+                
+        if device_id == None:
+            raise Exception("No mobile device id found!")
         
         self._api = Mobileclient()
         success = self._api.login(username, password, device_id)
